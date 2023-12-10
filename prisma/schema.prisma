@@ -1,0 +1,62 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+
+model Order{
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+  workerAllocation WorkerAllocation[]
+  vehicleAllocation VehicleAllocation[]
+  
+  }
+
+model Worker{
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+  name String
+  allocation WorkerAllocation[]
+  }
+
+model Truck{
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+  truckId String
+  allocation VehicleAllocation[]
+
+  }
+model WorkerAllocation{
+    id String @id @default(auto()) @map("_id") @db.ObjectId
+    allocationStartTime DateTime
+    allocationEndTime DateTime
+
+    workerId String @db.ObjectId
+    worker   Worker   @relation(fields: [workerId], references: [id]) 
+
+
+    orderId String @db.ObjectId
+    order   Order   @relation(fields: [orderId], references: [id]) 
+
+
+}
+
+model VehicleAllocation{
+    id String @id @default(auto()) @map("_id") @db.ObjectId
+    allocationStartTime DateTime
+    allocationEndTime DateTime
+
+    truckId String @db.ObjectId
+    Truck   Truck   @relation(fields: [truckId], references: [id]) 
+
+
+    orderId String @db.ObjectId
+    order   Order   @relation(fields: [orderId], references: [id]) 
+
+
+}
+
