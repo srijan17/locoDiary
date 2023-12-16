@@ -1,3 +1,8 @@
 node_modules
 # Keep environment variables out of version control
 .env
+# Remove local history files
+.history
+# Remove IDE project files
+.idea
+.vscode
